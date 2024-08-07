@@ -1,3 +1,3 @@
 # Preliminary Exams
 
-This repository contains the code used for the preliminary exams.
+This repository contains the R code used for the preliminary exams.
