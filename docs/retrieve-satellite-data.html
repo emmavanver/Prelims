@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Retrieve satellite data | Spatio-temporal yield variation to precipitation within a field</title>
+  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Retrieve satellite data | Spatio-temporal yield variation to precipitation within a field" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Retrieve satellite data | Spatio-temporal yield variation to precipitation within a field" />
+  
+  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
+The HTML output format for this example is bookdown::gitbook,
+set in the _output.yml file.</p>" />
+  
+
+<meta name="author" content="Emmanuela van Versendaal" />
+
+
+<meta name="date" content="2024-08-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="clean-yield-monitor-data-merge-with-satellite-data.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="body {
+  font-family: Arial, sans-serif;
+  font-size: 10pt;
+  text-align: justify;
+}
+p {
+  text-align: justify;
+}" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<Spatio-temporal Yield variation within field>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="retrieve-satellite-data.html"><a href="retrieve-satellite-data.html"><i class="fa fa-check"></i><b>2</b> Retrieve satellite data</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="retrieve-satellite-data.html"><a href="retrieve-satellite-data.html#import-and-configurate-libraries"><i class="fa fa-check"></i><b>2.1</b> Import and configurate libraries</a></li>
+<li class="chapter" data-level="2.2" data-path="retrieve-satellite-data.html"><a href="retrieve-satellite-data.html#field-identification"><i class="fa fa-check"></i><b>2.2</b> Field identification</a></li>
+<li class="chapter" data-level="2.3" data-path="retrieve-satellite-data.html"><a href="retrieve-satellite-data.html#gcvi-peak-detection"><i class="fa fa-check"></i><b>2.3</b> GCVI Peak detection</a></li>
+<li class="chapter" data-level="2.4" data-path="retrieve-satellite-data.html"><a href="retrieve-satellite-data.html#gcvi-at-pixel-level-within-field"><i class="fa fa-check"></i><b>2.4</b> GCVI at pixel level within field</a></li>
+<li class="chapter" data-level="2.5" data-path="retrieve-satellite-data.html"><a href="retrieve-satellite-data.html#reference"><i class="fa fa-check"></i><b>2.5</b> Reference</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="clean-yield-monitor-data-merge-with-satellite-data.html"><a href="clean-yield-monitor-data-merge-with-satellite-data.html"><i class="fa fa-check"></i><b>3</b> Clean yield monitor data &amp; merge with satellite data</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="clean-yield-monitor-data-merge-with-satellite-data.html"><a href="clean-yield-monitor-data-merge-with-satellite-data.html#import-libraries"><i class="fa fa-check"></i><b>3.1</b> Import libraries</a></li>
+<li class="chapter" data-level="3.2" data-path="clean-yield-monitor-data-merge-with-satellite-data.html"><a href="clean-yield-monitor-data-merge-with-satellite-data.html#field-identification-1"><i class="fa fa-check"></i><b>3.2</b> Field identification</a></li>
+<li class="chapter" data-level="3.3" data-path="clean-yield-monitor-data-merge-with-satellite-data.html"><a href="clean-yield-monitor-data-merge-with-satellite-data.html#clean-yield-monitor-data"><i class="fa fa-check"></i><b>3.3</b> Clean yield monitor data</a></li>
+<li class="chapter" data-level="3.4" data-path="clean-yield-monitor-data-merge-with-satellite-data.html"><a href="clean-yield-monitor-data-merge-with-satellite-data.html#join-yield-monitor-data-gcvi-data-sentinel-data"><i class="fa fa-check"></i><b>3.4</b> Join yield monitor data &amp; GCVI data (Sentinel data)</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Spatio-temporal yield variation to precipitation within a field</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="retrieve-satellite-data" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Retrieve satellite data<a href="retrieve-satellite-data.html#retrieve-satellite-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="import-and-configurate-libraries" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Import and configurate libraries<a href="retrieve-satellite-data.html#import-and-configurate-libraries" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Run the following code only if you never installer rgee package in R.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="retrieve-satellite-data.html#cb1-1" tabindex="-1"></a><span class="do">### To install Rgee</span></span>
+<span id="cb1-2"><a href="retrieve-satellite-data.html#cb1-2" tabindex="-1"></a><span class="co">#remove.packages(“reticulate”)</span></span>
+<span id="cb1-3"><a href="retrieve-satellite-data.html#cb1-3" tabindex="-1"></a><span class="co">#install.packages(“reticulate”, dependencies = TRUE)</span></span>
+<span id="cb1-4"><a href="retrieve-satellite-data.html#cb1-4" tabindex="-1"></a><span class="co">#remotes::install_github(“r-spatial/rgee”)</span></span>
+<span id="cb1-5"><a href="retrieve-satellite-data.html#cb1-5" tabindex="-1"></a><span class="do">##No Run</span></span>
+<span id="cb1-6"><a href="retrieve-satellite-data.html#cb1-6" tabindex="-1"></a><span class="do">## If it is the first time to use RGEE is necessary install gcloud cli</span></span>
+<span id="cb1-7"><a href="retrieve-satellite-data.html#cb1-7" tabindex="-1"></a><span class="co">#reticulate::py_install(“earthengine-api”, envname = “r-miniconda”)</span></span>
+<span id="cb1-8"><a href="retrieve-satellite-data.html#cb1-8" tabindex="-1"></a><span class="co">#reticulate::py_install(“numpy”, envname = “/Users/emmavanversendaal/Library/r-miniconda-arm64/envs/r-reticulate”)</span></span>
+<span id="cb1-9"><a href="retrieve-satellite-data.html#cb1-9" tabindex="-1"></a><span class="co">#reticulate::py_install(“google-cloud-storage”)</span></span>
+<span id="cb1-10"><a href="retrieve-satellite-data.html#cb1-10" tabindex="-1"></a><span class="co">#reticulate::py_config()</span></span></code></pre></div>
+<p>Import libraries and clean environment</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="retrieve-satellite-data.html#cb2-1" tabindex="-1"></a><span class="co"># # Packages to be used</span></span>
+<span id="cb2-2"><a href="retrieve-satellite-data.html#cb2-2" tabindex="-1"></a><span class="co"># library_names &lt;- c(“sp”, # (Bivand et al., 2012)</span></span>
+<span id="cb2-3"><a href="retrieve-satellite-data.html#cb2-3" tabindex="-1"></a><span class="co">#                    “sf”, # (Pebesma, 2018)</span></span>
+<span id="cb2-4"><a href="retrieve-satellite-data.html#cb2-4" tabindex="-1"></a><span class="co">#                    “raster”, # (Hijmans, 2023)</span></span>
+<span id="cb2-5"><a href="retrieve-satellite-data.html#cb2-5" tabindex="-1"></a><span class="co">#                    “tidyverse”, # (Wickham et al., 2019)</span></span>
+<span id="cb2-6"><a href="retrieve-satellite-data.html#cb2-6" tabindex="-1"></a><span class="co">#                    “rgee”, # (Aybar, 2024)</span></span>
+<span id="cb2-7"><a href="retrieve-satellite-data.html#cb2-7" tabindex="-1"></a><span class="co">#                    “tidyrgee”)  # (Arno and Erickson, 2022)</span></span>
+<span id="cb2-8"><a href="retrieve-satellite-data.html#cb2-8" tabindex="-1"></a><span class="co"># # Iterate over each library name</span></span>
+<span id="cb2-9"><a href="retrieve-satellite-data.html#cb2-9" tabindex="-1"></a><span class="co"># for (lib_name in library_names) {</span></span>
+<span id="cb2-10"><a href="retrieve-satellite-data.html#cb2-10" tabindex="-1"></a><span class="co">#   # Check if the library is already installed</span></span>
+<span id="cb2-11"><a href="retrieve-satellite-data.html#cb2-11" tabindex="-1"></a><span class="co">#   if (!require(lib_name, character.only = TRUE)) {</span></span>
+<span id="cb2-12"><a href="retrieve-satellite-data.html#cb2-12" tabindex="-1"></a><span class="co">#     # If the library is not installed, install it</span></span>
+<span id="cb2-13"><a href="retrieve-satellite-data.html#cb2-13" tabindex="-1"></a><span class="co">#     install.packages(lib_name, dependencies = TRUE)</span></span>
+<span id="cb2-14"><a href="retrieve-satellite-data.html#cb2-14" tabindex="-1"></a><span class="co">#     # Load the library</span></span>
+<span id="cb2-15"><a href="retrieve-satellite-data.html#cb2-15" tabindex="-1"></a><span class="co">#     library(lib_name, character.only = TRUE)</span></span>
+<span id="cb2-16"><a href="retrieve-satellite-data.html#cb2-16" tabindex="-1"></a><span class="co">#   } else {</span></span>
+<span id="cb2-17"><a href="retrieve-satellite-data.html#cb2-17" tabindex="-1"></a><span class="co">#     # If the library is already installed, load it</span></span>
+<span id="cb2-18"><a href="retrieve-satellite-data.html#cb2-18" tabindex="-1"></a><span class="co">#     library(lib_name, character.only = TRUE)</span></span>
+<span id="cb2-19"><a href="retrieve-satellite-data.html#cb2-19" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb2-20"><a href="retrieve-satellite-data.html#cb2-20" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+<p>Rgee configuration. Run this code to initialize session in Google Earth Engine.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="retrieve-satellite-data.html#cb3-1" tabindex="-1"></a><span class="co"># rgee::ee_check()</span></span>
+<span id="cb3-2"><a href="retrieve-satellite-data.html#cb3-2" tabindex="-1"></a><span class="co"># ee_clean_user_credentials()</span></span>
+<span id="cb3-3"><a href="retrieve-satellite-data.html#cb3-3" tabindex="-1"></a><span class="co"># ee_Authenticate(user=‘ee-evanversendaal’)</span></span>
+<span id="cb3-4"><a href="retrieve-satellite-data.html#cb3-4" tabindex="-1"></a><span class="co"># ee_Initialize(user=‘ee-evanversendaal’)</span></span></code></pre></div>
+<p>Run the following Functions: 1) Clouds mask function to identify pixels that are likely to be a cloud; 2) to calculate Green Chlorophyll Vegetation Index (GCVI)</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="retrieve-satellite-data.html#cb4-1" tabindex="-1"></a><span class="co"># ## 1) Clouds masking function ##</span></span>
+<span id="cb4-2"><a href="retrieve-satellite-data.html#cb4-2" tabindex="-1"></a><span class="co"># # This function is to filter the clouds, to have images with clear conditions</span></span>
+<span id="cb4-3"><a href="retrieve-satellite-data.html#cb4-3" tabindex="-1"></a><span class="co"># maskS2clouds &lt;-  function(image) {</span></span>
+<span id="cb4-4"><a href="retrieve-satellite-data.html#cb4-4" tabindex="-1"></a><span class="co">#     qa = image$select(‘QA60’);</span></span>
+<span id="cb4-5"><a href="retrieve-satellite-data.html#cb4-5" tabindex="-1"></a><span class="co">#     # Bits 10 and 11 are clouds and cirrus, respectively.</span></span>
+<span id="cb4-6"><a href="retrieve-satellite-data.html#cb4-6" tabindex="-1"></a><span class="co">#     cloudBitMask = bitwShiftL(1,10)</span></span>
+<span id="cb4-7"><a href="retrieve-satellite-data.html#cb4-7" tabindex="-1"></a><span class="co">#     cirrusBitMask = bitwShiftL(1, 11)</span></span>
+<span id="cb4-8"><a href="retrieve-satellite-data.html#cb4-8" tabindex="-1"></a><span class="co">#     # Both flags should be set to zero, indicating clear conditions.</span></span>
+<span id="cb4-9"><a href="retrieve-satellite-data.html#cb4-9" tabindex="-1"></a><span class="co">#     mask_data = qa$bitwiseAnd(cloudBitMask)$</span></span>
+<span id="cb4-10"><a href="retrieve-satellite-data.html#cb4-10" tabindex="-1"></a><span class="co">#       eq(0)$And(qa$bitwiseAnd(cirrusBitMask)$eq(0));</span></span>
+<span id="cb4-11"><a href="retrieve-satellite-data.html#cb4-11" tabindex="-1"></a><span class="co">#     return(image$updateMask(mask_data)$divide(10000))</span></span>
+<span id="cb4-12"><a href="retrieve-satellite-data.html#cb4-12" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb4-13"><a href="retrieve-satellite-data.html#cb4-13" tabindex="-1"></a><span class="co"># ## 2) Function to obatin GCVI ##</span></span>
+<span id="cb4-14"><a href="retrieve-satellite-data.html#cb4-14" tabindex="-1"></a><span class="co"># getindex_GCVI &lt;- function(image) {</span></span>
+<span id="cb4-15"><a href="retrieve-satellite-data.html#cb4-15" tabindex="-1"></a><span class="co">#   #Index &lt;- image$normalizedDifference(c(“B8”, “B4&quot;))$rename(‘Index’)</span></span>
+<span id="cb4-16"><a href="retrieve-satellite-data.html#cb4-16" tabindex="-1"></a><span class="co">#   Index &lt;- image$expression(</span></span>
+<span id="cb4-17"><a href="retrieve-satellite-data.html#cb4-17" tabindex="-1"></a><span class="co">#   expression = “(NIR/GREEN)-1”,</span></span>
+<span id="cb4-18"><a href="retrieve-satellite-data.html#cb4-18" tabindex="-1"></a><span class="co">#   opt_map =  list(</span></span>
+<span id="cb4-19"><a href="retrieve-satellite-data.html#cb4-19" tabindex="-1"></a><span class="co">#     “NIR” = image$select(“B8”),</span></span>
+<span id="cb4-20"><a href="retrieve-satellite-data.html#cb4-20" tabindex="-1"></a><span class="co">#     “GREEN” = image$select(“B3”)</span></span>
+<span id="cb4-21"><a href="retrieve-satellite-data.html#cb4-21" tabindex="-1"></a><span class="co">#    )</span></span>
+<span id="cb4-22"><a href="retrieve-satellite-data.html#cb4-22" tabindex="-1"></a><span class="co">#   )$rename(“Index”)</span></span>
+<span id="cb4-23"><a href="retrieve-satellite-data.html#cb4-23" tabindex="-1"></a><span class="co">#   return(image$addBands(Index))</span></span>
+<span id="cb4-24"><a href="retrieve-satellite-data.html#cb4-24" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+</div>
+<div id="field-identification" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Field identification<a href="retrieve-satellite-data.html#field-identification" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In this step, it’s essential to specify the field identification because the code is designed to automatically run across different fields. By defining the specific field at this stage, you ensure that the correct data is selected for analysis. This setup allows for a streamlined and efficient workflow, enabling the code to process data for multiple fields as needed.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="retrieve-satellite-data.html#cb5-1" tabindex="-1"></a><span class="co">#FARM_NAME = &quot;...&quot;</span></span></code></pre></div>
+</div>
+<div id="gcvi-peak-detection" class="section level2 hasAnchor" number="2.3">
+<h2><span class="header-section-number">2.3</span> GCVI Peak detection<a href="retrieve-satellite-data.html#gcvi-peak-detection" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Obtain the path to the field polygon/boundary.</strong></p>
+<p>This step is crucial because it ensures that only the satellite image specific to the field is used.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="retrieve-satellite-data.html#cb6-1" tabindex="-1"></a><span class="do">## 1. Create the polygons path ##</span></span>
+<span id="cb6-2"><a href="retrieve-satellite-data.html#cb6-2" tabindex="-1"></a><span class="co"># Path_polygon &lt;- data.frame(</span></span>
+<span id="cb6-3"><a href="retrieve-satellite-data.html#cb6-3" tabindex="-1"></a><span class="co">#   path = list.files(&quot;../1_Data/1_Polygon&quot;,</span></span>
+<span id="cb6-4"><a href="retrieve-satellite-data.html#cb6-4" tabindex="-1"></a><span class="co">#                     pattern = &quot;.shp&quot;, full.names = T, recursive = T)) %&gt;%</span></span>
+<span id="cb6-5"><a href="retrieve-satellite-data.html#cb6-5" tabindex="-1"></a><span class="co">#   mutate(path2 = path) %&gt;%</span></span>
+<span id="cb6-6"><a href="retrieve-satellite-data.html#cb6-6" tabindex="-1"></a><span class="co">#   separate(path2, into = c(&quot;..&quot;,&quot;Data_file&quot;,&quot;Polygon&quot;,&quot;Farm&quot;), sep = &quot;/&quot;) %&gt;%</span></span>
+<span id="cb6-7"><a href="retrieve-satellite-data.html#cb6-7" tabindex="-1"></a><span class="co">#   mutate(Farm = str_replace(Farm, &quot;_pol.shp&quot;, &quot;&quot;)) %&gt;%</span></span>
+<span id="cb6-8"><a href="retrieve-satellite-data.html#cb6-8" tabindex="-1"></a><span class="co">#   dplyr::select(path, Farm) %&gt;%</span></span>
+<span id="cb6-9"><a href="retrieve-satellite-data.html#cb6-9" tabindex="-1"></a><span class="co">#   #remove the filter if you want to run all farms</span></span>
+<span id="cb6-10"><a href="retrieve-satellite-data.html#cb6-10" tabindex="-1"></a><span class="co">#   dplyr::filter(Farm == FARM_NAME)</span></span></code></pre></div>
+<p><strong>Obtain GCVI peak serie</strong></p>
+<p>For this study, remote sensing data was sourced from the Sentinel-2 satellite dataset.
+More details can be found here: <a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR_HARMONIZED#description" class="uri">https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S2_SR_HARMONIZED#description</a>
+Identify the peak moment of the Green Chlorophyll Vegetation Index (GCVI) for the entire field. Then, determine a range of days around this peak, as well as separate ranges of days around the dates that are 30 days before and 30 days after the peak.
+This approach allows us to select three key images during the crop growing season. The use of these ranges is necessary because it’s not always possible to obtain a clear image (with less than 2% cloud cover) on specific days, so having a broader window increases the chances of finding a suitable image.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="retrieve-satellite-data.html#cb7-1" tabindex="-1"></a><span class="co"># for (file in 1:nrow(Path_polygon)){</span></span>
+<span id="cb7-2"><a href="retrieve-satellite-data.html#cb7-2" tabindex="-1"></a><span class="co">#   ## 1. Defining AOI, boundary, and sample points for all the fields ##</span></span>
+<span id="cb7-3"><a href="retrieve-satellite-data.html#cb7-3" tabindex="-1"></a><span class="co">#   AOI &lt;- sf::st_read(dsn = Path_polygon[file, 1],</span></span>
+<span id="cb7-4"><a href="retrieve-satellite-data.html#cb7-4" tabindex="-1"></a><span class="co">#                      stringsAsFactors = F, quiet = F) %&gt;%</span></span>
+<span id="cb7-5"><a href="retrieve-satellite-data.html#cb7-5" tabindex="-1"></a><span class="co">#     sf::st_geometry() %&gt;%</span></span>
+<span id="cb7-6"><a href="retrieve-satellite-data.html#cb7-6" tabindex="-1"></a><span class="co">#     st_cast(&quot;MULTIPOLYGON&quot;) %&gt;%</span></span>
+<span id="cb7-7"><a href="retrieve-satellite-data.html#cb7-7" tabindex="-1"></a><span class="co">#     st_zm(drop = TRUE) %&gt;%</span></span>
+<span id="cb7-8"><a href="retrieve-satellite-data.html#cb7-8" tabindex="-1"></a><span class="co">#     sf_as_ee()</span></span>
+<span id="cb7-9"><a href="retrieve-satellite-data.html#cb7-9" tabindex="-1"></a><span class="co">#   ## 2. Retrieve Spatial layer ##</span></span>
+<span id="cb7-10"><a href="retrieve-satellite-data.html#cb7-10" tabindex="-1"></a><span class="co">#   </span><span class="al">###</span><span class="co"> 2.1. Extracting the bands</span></span>
+<span id="cb7-11"><a href="retrieve-satellite-data.html#cb7-11" tabindex="-1"></a><span class="co">#   s2bands &lt;- ee$ImageCollection(&quot;COPERNICUS/S2_HARMONIZED&quot;)$</span></span>
+<span id="cb7-12"><a href="retrieve-satellite-data.html#cb7-12" tabindex="-1"></a><span class="co">#     filterBounds(AOI)$</span></span>
+<span id="cb7-13"><a href="retrieve-satellite-data.html#cb7-13" tabindex="-1"></a><span class="co">#     # Period that we want:</span></span>
+<span id="cb7-14"><a href="retrieve-satellite-data.html#cb7-14" tabindex="-1"></a><span class="co">#     filterDate(&quot;2017-01-01&quot;,&quot;2024-01-01&quot;)$</span></span>
+<span id="cb7-15"><a href="retrieve-satellite-data.html#cb7-15" tabindex="-1"></a><span class="co">#     # Filter the images with more than 5% clouds:</span></span>
+<span id="cb7-16"><a href="retrieve-satellite-data.html#cb7-16" tabindex="-1"></a><span class="co">#     filter(ee$Filter$lt(&quot;CLOUDY_PIXEL_PERCENTAGE&quot;, 3))$</span></span>
+<span id="cb7-17"><a href="retrieve-satellite-data.html#cb7-17" tabindex="-1"></a><span class="co">#     map(maskS2clouds)$</span></span>
+<span id="cb7-18"><a href="retrieve-satellite-data.html#cb7-18" tabindex="-1"></a><span class="co">#     map(function(x){</span></span>
+<span id="cb7-19"><a href="retrieve-satellite-data.html#cb7-19" tabindex="-1"></a><span class="co">#     date &lt;- ee$Date(&quot;x$get(system:time_start&quot;))$format(&quot;YYYY_MM_dd&quot;)</span></span>
+<span id="cb7-20"><a href="retrieve-satellite-data.html#cb7-20" tabindex="-1"></a><span class="co">#     # Bands that we want:</span></span>
+<span id="cb7-21"><a href="retrieve-satellite-data.html#cb7-21" tabindex="-1"></a><span class="co">#     x$select(&quot;B2&quot;,&quot;B3&quot;,&quot;B4&quot;,&quot;B8&quot;) })</span></span>
+<span id="cb7-22"><a href="retrieve-satellite-data.html#cb7-22" tabindex="-1"></a><span class="co">#   </span><span class="al">###</span><span class="co"> 2.2. Extracting the data points to a data frame</span></span>
+<span id="cb7-23"><a href="retrieve-satellite-data.html#cb7-23" tabindex="-1"></a><span class="co">#   s2extraction &lt;- ee_extract(</span></span>
+<span id="cb7-24"><a href="retrieve-satellite-data.html#cb7-24" tabindex="-1"></a><span class="co">#     x = s2bands,</span></span>
+<span id="cb7-25"><a href="retrieve-satellite-data.html#cb7-25" tabindex="-1"></a><span class="co">#     y = AOI,</span></span>
+<span id="cb7-26"><a href="retrieve-satellite-data.html#cb7-26" tabindex="-1"></a><span class="co">#     scale = 10,</span></span>
+<span id="cb7-27"><a href="retrieve-satellite-data.html#cb7-27" tabindex="-1"></a><span class="co">#     fun = ee$Reducer$median(),</span></span>
+<span id="cb7-28"><a href="retrieve-satellite-data.html#cb7-28" tabindex="-1"></a><span class="co">#     sf = FALSE ) %&gt;%</span></span>
+<span id="cb7-29"><a href="retrieve-satellite-data.html#cb7-29" tabindex="-1"></a><span class="co">#     t() %&gt;%</span></span>
+<span id="cb7-30"><a href="retrieve-satellite-data.html#cb7-30" tabindex="-1"></a><span class="co">#     as.data.frame() %&gt;%</span></span>
+<span id="cb7-31"><a href="retrieve-satellite-data.html#cb7-31" tabindex="-1"></a><span class="co">#     rownames_to_column() %&gt;%</span></span>
+<span id="cb7-32"><a href="retrieve-satellite-data.html#cb7-32" tabindex="-1"></a><span class="co">#     separate(rowname, c(&quot;datet1&quot;, &quot;datet2&quot;, &quot;check&quot;, &quot;band&quot;), sep = &quot;_&quot;)</span></span>
+<span id="cb7-33"><a href="retrieve-satellite-data.html#cb7-33" tabindex="-1"></a><span class="co">#   </span><span class="al">###</span><span class="co"> 4.3. Index calculation</span></span>
+<span id="cb7-34"><a href="retrieve-satellite-data.html#cb7-34" tabindex="-1"></a><span class="co">#   s2extraction &lt;- s2extraction %&gt;%</span></span>
+<span id="cb7-35"><a href="retrieve-satellite-data.html#cb7-35" tabindex="-1"></a><span class="co">#     pivot_longer(cols = !c(datet1, datet2, check, band),</span></span>
+<span id="cb7-36"><a href="retrieve-satellite-data.html#cb7-36" tabindex="-1"></a><span class="co">#                  names_to = &quot;point_id&quot;,</span></span>
+<span id="cb7-37"><a href="retrieve-satellite-data.html#cb7-37" tabindex="-1"></a><span class="co">#                  values_to = &quot;values&quot;) %&gt;%</span></span>
+<span id="cb7-38"><a href="retrieve-satellite-data.html#cb7-38" tabindex="-1"></a><span class="co">#     pivot_wider(names_from = band,</span></span>
+<span id="cb7-39"><a href="retrieve-satellite-data.html#cb7-39" tabindex="-1"></a><span class="co">#                 values_from =  values ) %&gt;%</span></span>
+<span id="cb7-40"><a href="retrieve-satellite-data.html#cb7-40" tabindex="-1"></a><span class="co">#     dplyr::select(&quot;datet1&quot;, &quot;point_id&quot;,&quot;B2&quot;,&quot;B3&quot;,&quot;B4&quot;,&quot;B8&quot;) %&gt;%</span></span>
+<span id="cb7-41"><a href="retrieve-satellite-data.html#cb7-41" tabindex="-1"></a><span class="co">#     mutate(B2 = as.numeric(unlist(B2)),</span></span>
+<span id="cb7-42"><a href="retrieve-satellite-data.html#cb7-42" tabindex="-1"></a><span class="co">#            B3 = as.numeric(unlist(B3)),</span></span>
+<span id="cb7-43"><a href="retrieve-satellite-data.html#cb7-43" tabindex="-1"></a><span class="co">#            B4 = as.numeric(unlist(B4)),</span></span>
+<span id="cb7-44"><a href="retrieve-satellite-data.html#cb7-44" tabindex="-1"></a><span class="co">#            B8 = as.numeric(unlist(B8)),</span></span>
+<span id="cb7-45"><a href="retrieve-satellite-data.html#cb7-45" tabindex="-1"></a><span class="co">#            GCVI = (B8 / B3)-1)</span></span>
+<span id="cb7-46"><a href="retrieve-satellite-data.html#cb7-46" tabindex="-1"></a><span class="co">#   </span><span class="al">###</span><span class="co"> 2.4. Data wrangling</span></span>
+<span id="cb7-47"><a href="retrieve-satellite-data.html#cb7-47" tabindex="-1"></a><span class="co">#   s2datapoints &lt;- s2extraction %&gt;%</span></span>
+<span id="cb7-48"><a href="retrieve-satellite-data.html#cb7-48" tabindex="-1"></a><span class="co">#     mutate(date = str_replace(datet1, &quot;X&quot;, &quot;&quot;)) %&gt;%</span></span>
+<span id="cb7-49"><a href="retrieve-satellite-data.html#cb7-49" tabindex="-1"></a><span class="co">#     separate(date, into=c(&quot;asdate&quot;, &quot;remove&quot;), sep=&quot;T1&quot;) %&gt;%</span></span>
+<span id="cb7-50"><a href="retrieve-satellite-data.html#cb7-50" tabindex="-1"></a><span class="co">#     mutate(DATE = ymd(asdate)) %&gt;%</span></span>
+<span id="cb7-51"><a href="retrieve-satellite-data.html#cb7-51" tabindex="-1"></a><span class="co">#     rename(date = DATE) %&gt;%</span></span>
+<span id="cb7-52"><a href="retrieve-satellite-data.html#cb7-52" tabindex="-1"></a><span class="co">#     dplyr::select(point_id, GCVI, NDVI,EVI,date)  %&gt;%</span></span>
+<span id="cb7-53"><a href="retrieve-satellite-data.html#cb7-53" tabindex="-1"></a><span class="co">#     mutate(Year=year(date),</span></span>
+<span id="cb7-54"><a href="retrieve-satellite-data.html#cb7-54" tabindex="-1"></a><span class="co">#            Farm = Path_polygon[file, 2]) %&gt;%</span></span>
+<span id="cb7-55"><a href="retrieve-satellite-data.html#cb7-55" tabindex="-1"></a><span class="co">#     dplyr::filter(GCVI&gt;=0)</span></span>
+<span id="cb7-56"><a href="retrieve-satellite-data.html#cb7-56" tabindex="-1"></a><span class="co">#   </span><span class="al">###</span><span class="co"> 2.5. Peaks GCVI in each year</span></span>
+<span id="cb7-57"><a href="retrieve-satellite-data.html#cb7-57" tabindex="-1"></a><span class="co">#   sm_maxGCVI &lt;- s2datapoints %&gt;%</span></span>
+<span id="cb7-58"><a href="retrieve-satellite-data.html#cb7-58" tabindex="-1"></a><span class="co">#     na.exclude() %&gt;%</span></span>
+<span id="cb7-59"><a href="retrieve-satellite-data.html#cb7-59" tabindex="-1"></a><span class="co">#     group_by(Year) %&gt;%</span></span>
+<span id="cb7-60"><a href="retrieve-satellite-data.html#cb7-60" tabindex="-1"></a><span class="co">#     ## Fit a polynomial to detect the GCVI peak</span></span>
+<span id="cb7-61"><a href="retrieve-satellite-data.html#cb7-61" tabindex="-1"></a><span class="co">#     mutate(smooth =stats::predict(stats::loess(GCVI~as.numeric(date),</span></span>
+<span id="cb7-62"><a href="retrieve-satellite-data.html#cb7-62" tabindex="-1"></a><span class="co">#                                                span=.3))) %&gt;%</span></span>
+<span id="cb7-63"><a href="retrieve-satellite-data.html#cb7-63" tabindex="-1"></a><span class="co">#     slice_max(order_by = smooth) %&gt;%</span></span>
+<span id="cb7-64"><a href="retrieve-satellite-data.html#cb7-64" tabindex="-1"></a><span class="co">#     mutate(date_b30 = date - 30,</span></span>
+<span id="cb7-65"><a href="retrieve-satellite-data.html#cb7-65" tabindex="-1"></a><span class="co">#            lb_day_b30 = date_b30 - days(15),</span></span>
+<span id="cb7-66"><a href="retrieve-satellite-data.html#cb7-66" tabindex="-1"></a><span class="co">#            up_day_b30 = date_b30 + days(15),</span></span>
+<span id="cb7-67"><a href="retrieve-satellite-data.html#cb7-67" tabindex="-1"></a><span class="co">#            lb_day = date - days(15),</span></span>
+<span id="cb7-68"><a href="retrieve-satellite-data.html#cb7-68" tabindex="-1"></a><span class="co">#            up_day = date + days(15),</span></span>
+<span id="cb7-69"><a href="retrieve-satellite-data.html#cb7-69" tabindex="-1"></a><span class="co">#            date_30 = date + 30,</span></span>
+<span id="cb7-70"><a href="retrieve-satellite-data.html#cb7-70" tabindex="-1"></a><span class="co">#            lb_day_30 = date_30 - days(15),</span></span>
+<span id="cb7-71"><a href="retrieve-satellite-data.html#cb7-71" tabindex="-1"></a><span class="co">#            up_day_30 = date_30 + days(15)) %&gt;%</span></span>
+<span id="cb7-72"><a href="retrieve-satellite-data.html#cb7-72" tabindex="-1"></a><span class="co">#     distinct(date, .keep_all = TRUE)</span></span>
+<span id="cb7-73"><a href="retrieve-satellite-data.html#cb7-73" tabindex="-1"></a><span class="co">#   write.csv(sm_maxGCVI,</span></span>
+<span id="cb7-74"><a href="retrieve-satellite-data.html#cb7-74" tabindex="-1"></a><span class="co">#             paste0(&quot;../1_Data/2_Spatial_Layer/1_TS_peak/peak_diff_moments/&quot;,</span></span>
+<span id="cb7-75"><a href="retrieve-satellite-data.html#cb7-75" tabindex="-1"></a><span class="co">#                    Path_polygon[file,2],&quot;_GCVI.csv&quot;), row.names = F)</span></span>
+<span id="cb7-76"><a href="retrieve-satellite-data.html#cb7-76" tabindex="-1"></a><span class="co">#   ts_gcvi &lt;- s2datapoints %&gt;%</span></span>
+<span id="cb7-77"><a href="retrieve-satellite-data.html#cb7-77" tabindex="-1"></a><span class="co">#       ggplot(aes(x = date, y = GCVI)) +</span></span>
+<span id="cb7-78"><a href="retrieve-satellite-data.html#cb7-78" tabindex="-1"></a><span class="co">#       geom_point() +</span></span>
+<span id="cb7-79"><a href="retrieve-satellite-data.html#cb7-79" tabindex="-1"></a><span class="co">#       geom_smooth(span=.07, color = &quot;#52796F&quot;) +</span></span>
+<span id="cb7-80"><a href="retrieve-satellite-data.html#cb7-80" tabindex="-1"></a><span class="co">#       geom_point(data=sm_maxGCVI, aes(y=smooth),shape = 21, alpha=.7,</span></span>
+<span id="cb7-81"><a href="retrieve-satellite-data.html#cb7-81" tabindex="-1"></a><span class="co">#                  color=&quot;grey25&quot;, size=2.5, fill = &quot;#9B2226&quot;) +</span></span>
+<span id="cb7-82"><a href="retrieve-satellite-data.html#cb7-82" tabindex="-1"></a><span class="co">#       scale_x_date(date_breaks = &quot;1 year&quot;, date_labels = &quot;%Y&quot;)+</span></span>
+<span id="cb7-83"><a href="retrieve-satellite-data.html#cb7-83" tabindex="-1"></a><span class="co">#       theme_bw()</span></span>
+<span id="cb7-84"><a href="retrieve-satellite-data.html#cb7-84" tabindex="-1"></a><span class="co">#   ggsave(paste0(&quot;../3_Output/1_Spat_layer/TimeSerie/&quot;, FARM_NAME, &quot;_GCVI.png&quot;),</span></span>
+<span id="cb7-85"><a href="retrieve-satellite-data.html#cb7-85" tabindex="-1"></a><span class="co">#          height = 4, width = 5)</span></span>
+<span id="cb7-86"><a href="retrieve-satellite-data.html#cb7-86" tabindex="-1"></a><span class="co"># }</span></span></code></pre></div>
+</div>
+<div id="gcvi-at-pixel-level-within-field" class="section level2 hasAnchor" number="2.4">
+<h2><span class="header-section-number">2.4</span> GCVI at pixel level within field<a href="retrieve-satellite-data.html#gcvi-at-pixel-level-within-field" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Upload peak serie file path</strong></p>
+<p>Upload the peak serie .csv file created in the steps before.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="retrieve-satellite-data.html#cb8-1" tabindex="-1"></a><span class="co"># path_peak &lt;- data.frame(</span></span>
+<span id="cb8-2"><a href="retrieve-satellite-data.html#cb8-2" tabindex="-1"></a><span class="co">#   pathGCVI = list.files(&quot;../1_Data/2_Spatial_Layer/1_TS_peak/peak_diff_moments&quot;,</span></span>
+<span id="cb8-3"><a href="retrieve-satellite-data.html#cb8-3" tabindex="-1"></a><span class="co">#                         full.names =T,pattern =&quot;_GCVI.csv&quot;,recursive =T)) %&gt;%</span></span>
+<span id="cb8-4"><a href="retrieve-satellite-data.html#cb8-4" tabindex="-1"></a><span class="co">#   mutate(path = pathGCVI) %&gt;%</span></span>
+<span id="cb8-5"><a href="retrieve-satellite-data.html#cb8-5" tabindex="-1"></a><span class="co">#   separate(path, into = c(&quot;del&quot;, &quot;del1&quot; ,&quot;del2&quot;, &quot;del3&quot;, &quot;del4&quot;,&quot;Farm&quot;),</span></span>
+<span id="cb8-6"><a href="retrieve-satellite-data.html#cb8-6" tabindex="-1"></a><span class="co">#            sep = &quot;/&quot;) %&gt;%</span></span>
+<span id="cb8-7"><a href="retrieve-satellite-data.html#cb8-7" tabindex="-1"></a><span class="co">#   mutate(Farm = str_replace(Farm, &quot;_GCVI.csv&quot;, &quot;&quot;),</span></span>
+<span id="cb8-8"><a href="retrieve-satellite-data.html#cb8-8" tabindex="-1"></a><span class="co">#          Path_polygon = paste0(&quot;../1_Data/1_Polygon/&quot;, Farm, &quot;_pol.shp&quot;)) %&gt;%</span></span>
+<span id="cb8-9"><a href="retrieve-satellite-data.html#cb8-9" tabindex="-1"></a><span class="co">#   dplyr::select(-starts_with(&quot;del&quot;)) %&gt;%</span></span>
+<span id="cb8-10"><a href="retrieve-satellite-data.html#cb8-10" tabindex="-1"></a><span class="co">#   dplyr::filter(Farm == FARM_NAME)</span></span></code></pre></div>
+<p><strong>Obtain GCVI at pixel level within the field</strong></p>
+<p>For each year, starting from 2017 (the start of Sentinel-2 data availability), images with less than 2% clouds were obtained for three specific periods: around the GCVI peak, 30 days before the peak, and 30 days after the peak. These images have a pixel resolution of 10 m x 10 m. Additionally, the GCVI was calculated for each of these periods.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="retrieve-satellite-data.html#cb9-1" tabindex="-1"></a><span class="co"># ## Peak moment ##</span></span>
+<span id="cb9-2"><a href="retrieve-satellite-data.html#cb9-2" tabindex="-1"></a><span class="co"># Year &lt;- c(2017,2018,2019,2020,2021,2022,2023)</span></span>
+<span id="cb9-3"><a href="retrieve-satellite-data.html#cb9-3" tabindex="-1"></a><span class="co"># for (file in 1:nrow(path_peak)){</span></span>
+<span id="cb9-4"><a href="retrieve-satellite-data.html#cb9-4" tabindex="-1"></a><span class="co">#   AOI &lt;- sf::st_read(dsn = path_peak[file, 3], # polygon</span></span>
+<span id="cb9-5"><a href="retrieve-satellite-data.html#cb9-5" tabindex="-1"></a><span class="co">#                      stringsAsFactors = F,</span></span>
+<span id="cb9-6"><a href="retrieve-satellite-data.html#cb9-6" tabindex="-1"></a><span class="co">#                      quiet = F) %&gt;%</span></span>
+<span id="cb9-7"><a href="retrieve-satellite-data.html#cb9-7" tabindex="-1"></a><span class="co">#     sf::st_geometry() %&gt;%</span></span>
+<span id="cb9-8"><a href="retrieve-satellite-data.html#cb9-8" tabindex="-1"></a><span class="co">#     st_cast(&quot;MULTIPOLYGON&quot;) %&gt;%</span></span>
+<span id="cb9-9"><a href="retrieve-satellite-data.html#cb9-9" tabindex="-1"></a><span class="co">#     st_zm(drop = TRUE) %&gt;%</span></span>
+<span id="cb9-10"><a href="retrieve-satellite-data.html#cb9-10" tabindex="-1"></a><span class="co">#     sf_as_ee()</span></span>
+<span id="cb9-11"><a href="retrieve-satellite-data.html#cb9-11" tabindex="-1"></a><span class="co">#   for (y in Year){</span></span>
+<span id="cb9-12"><a href="retrieve-satellite-data.html#cb9-12" tabindex="-1"></a><span class="co">#     peak &lt;- read.csv(path_peak[file, 1]) %&gt;%</span></span>
+<span id="cb9-13"><a href="retrieve-satellite-data.html#cb9-13" tabindex="-1"></a><span class="co">#       dplyr::filter(Year==y)</span></span>
+<span id="cb9-14"><a href="retrieve-satellite-data.html#cb9-14" tabindex="-1"></a><span class="co">#     s2 &lt;- ee$ImageCollection(&quot;COPERNICUS/S2_HARMONIZED&quot;)$</span></span>
+<span id="cb9-15"><a href="retrieve-satellite-data.html#cb9-15" tabindex="-1"></a><span class="co">#       filterBounds(AOI)$</span></span>
+<span id="cb9-16"><a href="retrieve-satellite-data.html#cb9-16" tabindex="-1"></a><span class="co">#       filterDate(as.character(peak$lb_day),</span></span>
+<span id="cb9-17"><a href="retrieve-satellite-data.html#cb9-17" tabindex="-1"></a><span class="co">#                  as.character(peak$up_day))$</span></span>
+<span id="cb9-18"><a href="retrieve-satellite-data.html#cb9-18" tabindex="-1"></a><span class="co">#       filter(ee$Filter$lt(&quot;CLOUDY_PIXEL_PERCENTAGE&quot;, 2))$</span></span>
+<span id="cb9-19"><a href="retrieve-satellite-data.html#cb9-19" tabindex="-1"></a><span class="co">#       map(maskS2clouds)$map(getindex_GCVI)$select(&quot;Index&quot;)$median()</span></span>
+<span id="cb9-20"><a href="retrieve-satellite-data.html#cb9-20" tabindex="-1"></a><span class="co">#     s2_im &lt;- ee$Image(s2)$</span></span>
+<span id="cb9-21"><a href="retrieve-satellite-data.html#cb9-21" tabindex="-1"></a><span class="co">#       clip(AOI)</span></span>
+<span id="cb9-22"><a href="retrieve-satellite-data.html#cb9-22" tabindex="-1"></a><span class="co">#     s2_raster &lt;- ee_as_rast(s2_im,</span></span>
+<span id="cb9-23"><a href="retrieve-satellite-data.html#cb9-23" tabindex="-1"></a><span class="co">#                             region = AOI,</span></span>
+<span id="cb9-24"><a href="retrieve-satellite-data.html#cb9-24" tabindex="-1"></a><span class="co">#                             via = &quot;getDownloadURL&quot;,</span></span>
+<span id="cb9-25"><a href="retrieve-satellite-data.html#cb9-25" tabindex="-1"></a><span class="co">#                             dsn = paste0(&quot;../1_Data/2_Spatial_Layer/2_VI_raster/Peak/p2/&quot;,</span></span>
+<span id="cb9-26"><a href="retrieve-satellite-data.html#cb9-26" tabindex="-1"></a><span class="co">#                                          path_peak[file, 2],&quot;_&quot;,y,&quot;_GCVI.tif&quot;),</span></span>
+<span id="cb9-27"><a href="retrieve-satellite-data.html#cb9-27" tabindex="-1"></a><span class="co">#                             scale = 10)</span></span>
+<span id="cb9-28"><a href="retrieve-satellite-data.html#cb9-28" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb9-29"><a href="retrieve-satellite-data.html#cb9-29" tabindex="-1"></a><span class="co">#   }</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="retrieve-satellite-data.html#cb10-1" tabindex="-1"></a><span class="co"># ## Peak - 30 days moment##</span></span>
+<span id="cb10-2"><a href="retrieve-satellite-data.html#cb10-2" tabindex="-1"></a><span class="co"># Year &lt;- c(2017,2018,2019,2020,2021,2022,2023)</span></span>
+<span id="cb10-3"><a href="retrieve-satellite-data.html#cb10-3" tabindex="-1"></a><span class="co"># for (file in 1:nrow(path_peak)){</span></span>
+<span id="cb10-4"><a href="retrieve-satellite-data.html#cb10-4" tabindex="-1"></a><span class="co">#   AOI &lt;- sf::st_read(dsn = path_peak[file, 3], # polygon</span></span>
+<span id="cb10-5"><a href="retrieve-satellite-data.html#cb10-5" tabindex="-1"></a><span class="co">#                      stringsAsFactors = F,</span></span>
+<span id="cb10-6"><a href="retrieve-satellite-data.html#cb10-6" tabindex="-1"></a><span class="co">#                      quiet = F) %&gt;%</span></span>
+<span id="cb10-7"><a href="retrieve-satellite-data.html#cb10-7" tabindex="-1"></a><span class="co">#     sf::st_geometry() %&gt;%</span></span>
+<span id="cb10-8"><a href="retrieve-satellite-data.html#cb10-8" tabindex="-1"></a><span class="co">#     st_cast(&quot;MULTIPOLYGON&quot;) %&gt;%</span></span>
+<span id="cb10-9"><a href="retrieve-satellite-data.html#cb10-9" tabindex="-1"></a><span class="co">#     st_zm(drop = TRUE) %&gt;%</span></span>
+<span id="cb10-10"><a href="retrieve-satellite-data.html#cb10-10" tabindex="-1"></a><span class="co">#     sf_as_ee()</span></span>
+<span id="cb10-11"><a href="retrieve-satellite-data.html#cb10-11" tabindex="-1"></a><span class="co">#   for (y in Year){</span></span>
+<span id="cb10-12"><a href="retrieve-satellite-data.html#cb10-12" tabindex="-1"></a><span class="co">#     peak &lt;- read.csv(path_peak[file, 1]) %&gt;%</span></span>
+<span id="cb10-13"><a href="retrieve-satellite-data.html#cb10-13" tabindex="-1"></a><span class="co">#       dplyr::filter(Year==y)</span></span>
+<span id="cb10-14"><a href="retrieve-satellite-data.html#cb10-14" tabindex="-1"></a><span class="co">#     s2 &lt;- ee$ImageCollection(&quot;COPERNICUS/S2_HARMONIZED&quot;)$</span></span>
+<span id="cb10-15"><a href="retrieve-satellite-data.html#cb10-15" tabindex="-1"></a><span class="co">#       filterBounds(AOI)$</span></span>
+<span id="cb10-16"><a href="retrieve-satellite-data.html#cb10-16" tabindex="-1"></a><span class="co">#       filterDate(as.character(peak$lb_day_b30),</span></span>
+<span id="cb10-17"><a href="retrieve-satellite-data.html#cb10-17" tabindex="-1"></a><span class="co">#                  as.character(peak$up_day_b30))$</span></span>
+<span id="cb10-18"><a href="retrieve-satellite-data.html#cb10-18" tabindex="-1"></a><span class="co">#       filter(ee$Filter$lt(&quot;CLOUDY_PIXEL_PERCENTAGE&quot;, 2))$</span></span>
+<span id="cb10-19"><a href="retrieve-satellite-data.html#cb10-19" tabindex="-1"></a><span class="co">#       map(maskS2clouds)$map(getindex_GCVI)$select(&quot;Index&quot;)$median()</span></span>
+<span id="cb10-20"><a href="retrieve-satellite-data.html#cb10-20" tabindex="-1"></a><span class="co">#     s2_im &lt;- ee$Image(s2)$</span></span>
+<span id="cb10-21"><a href="retrieve-satellite-data.html#cb10-21" tabindex="-1"></a><span class="co">#       clip(AOI)</span></span>
+<span id="cb10-22"><a href="retrieve-satellite-data.html#cb10-22" tabindex="-1"></a><span class="co">#     s2_raster &lt;- ee_as_rast(s2_im,</span></span>
+<span id="cb10-23"><a href="retrieve-satellite-data.html#cb10-23" tabindex="-1"></a><span class="co">#                             region = AOI,</span></span>
+<span id="cb10-24"><a href="retrieve-satellite-data.html#cb10-24" tabindex="-1"></a><span class="co">#                             via = &quot;getDownloadURL&quot;,</span></span>
+<span id="cb10-25"><a href="retrieve-satellite-data.html#cb10-25" tabindex="-1"></a><span class="co">#                             dsn = paste0(</span></span>
+<span id="cb10-26"><a href="retrieve-satellite-data.html#cb10-26" tabindex="-1"></a><span class="co">#                               &quot;../1_Data/2_Spatial_Layer/2_VI_raster/Peak_b30/p_b30/&quot;,</span></span>
+<span id="cb10-27"><a href="retrieve-satellite-data.html#cb10-27" tabindex="-1"></a><span class="co">#                               path_peak[file, 2],&quot;_&quot;,y,&quot;_GCVI.tif&quot;),</span></span>
+<span id="cb10-28"><a href="retrieve-satellite-data.html#cb10-28" tabindex="-1"></a><span class="co">#                             scale = 10)</span></span>
+<span id="cb10-29"><a href="retrieve-satellite-data.html#cb10-29" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb10-30"><a href="retrieve-satellite-data.html#cb10-30" tabindex="-1"></a><span class="co">#   }</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="retrieve-satellite-data.html#cb11-1" tabindex="-1"></a><span class="co"># ## Peak - 30 days moment##</span></span>
+<span id="cb11-2"><a href="retrieve-satellite-data.html#cb11-2" tabindex="-1"></a><span class="co"># Year &lt;- c(2017,2018,2019,2020,2021,2022,2023)</span></span>
+<span id="cb11-3"><a href="retrieve-satellite-data.html#cb11-3" tabindex="-1"></a><span class="co"># for (file in 1:nrow(path_peak)){</span></span>
+<span id="cb11-4"><a href="retrieve-satellite-data.html#cb11-4" tabindex="-1"></a><span class="co">#   AOI &lt;- sf::st_read(dsn = path_peak[file, 3], # polygon</span></span>
+<span id="cb11-5"><a href="retrieve-satellite-data.html#cb11-5" tabindex="-1"></a><span class="co">#                      stringsAsFactors = F,</span></span>
+<span id="cb11-6"><a href="retrieve-satellite-data.html#cb11-6" tabindex="-1"></a><span class="co">#                      quiet = F) %&gt;%</span></span>
+<span id="cb11-7"><a href="retrieve-satellite-data.html#cb11-7" tabindex="-1"></a><span class="co">#     sf::st_geometry() %&gt;%</span></span>
+<span id="cb11-8"><a href="retrieve-satellite-data.html#cb11-8" tabindex="-1"></a><span class="co">#     st_cast(&quot;MULTIPOLYGON&quot;) %&gt;%</span></span>
+<span id="cb11-9"><a href="retrieve-satellite-data.html#cb11-9" tabindex="-1"></a><span class="co">#     st_zm(drop = TRUE) %&gt;%</span></span>
+<span id="cb11-10"><a href="retrieve-satellite-data.html#cb11-10" tabindex="-1"></a><span class="co">#     sf_as_ee()</span></span>
+<span id="cb11-11"><a href="retrieve-satellite-data.html#cb11-11" tabindex="-1"></a><span class="co">#   for (y in Year){</span></span>
+<span id="cb11-12"><a href="retrieve-satellite-data.html#cb11-12" tabindex="-1"></a><span class="co">#     peak &lt;- read.csv(path_peak[file, 1]) %&gt;%</span></span>
+<span id="cb11-13"><a href="retrieve-satellite-data.html#cb11-13" tabindex="-1"></a><span class="co">#       dplyr::filter(Year==y)</span></span>
+<span id="cb11-14"><a href="retrieve-satellite-data.html#cb11-14" tabindex="-1"></a><span class="co">#     s2 &lt;- ee$ImageCollection(&quot;COPERNICUS/S2_HARMONIZED&quot;)$</span></span>
+<span id="cb11-15"><a href="retrieve-satellite-data.html#cb11-15" tabindex="-1"></a><span class="co">#       filterBounds(AOI)$</span></span>
+<span id="cb11-16"><a href="retrieve-satellite-data.html#cb11-16" tabindex="-1"></a><span class="co">#       filterDate(as.character(peak$lb_day_30),</span></span>
+<span id="cb11-17"><a href="retrieve-satellite-data.html#cb11-17" tabindex="-1"></a><span class="co">#                  as.character(peak$up_day_30))$</span></span>
+<span id="cb11-18"><a href="retrieve-satellite-data.html#cb11-18" tabindex="-1"></a><span class="co">#       filter(ee$Filter$lt(&quot;CLOUDY_PIXEL_PERCENTAGE&quot;, 2))$</span></span>
+<span id="cb11-19"><a href="retrieve-satellite-data.html#cb11-19" tabindex="-1"></a><span class="co">#       map(maskS2clouds)$map(getindex_GCVI)$select(&quot;Index&quot;)$median()</span></span>
+<span id="cb11-20"><a href="retrieve-satellite-data.html#cb11-20" tabindex="-1"></a><span class="co">#     s2_im &lt;- ee$Image(s2)$</span></span>
+<span id="cb11-21"><a href="retrieve-satellite-data.html#cb11-21" tabindex="-1"></a><span class="co">#       clip(AOI)</span></span>
+<span id="cb11-22"><a href="retrieve-satellite-data.html#cb11-22" tabindex="-1"></a><span class="co">#     s2_raster &lt;- ee_as_rast(s2_im,</span></span>
+<span id="cb11-23"><a href="retrieve-satellite-data.html#cb11-23" tabindex="-1"></a><span class="co">#                             region = AOI,</span></span>
+<span id="cb11-24"><a href="retrieve-satellite-data.html#cb11-24" tabindex="-1"></a><span class="co">#                             via = &quot;getDownloadURL&quot;,</span></span>
+<span id="cb11-25"><a href="retrieve-satellite-data.html#cb11-25" tabindex="-1"></a><span class="co">#                             dsn =</span></span>
+<span id="cb11-26"><a href="retrieve-satellite-data.html#cb11-26" tabindex="-1"></a><span class="co">#                               paste0(&quot;../1_Data/2_Spatial_Layer/2_VI_raster/Peak_30/p30/&quot;,</span></span>
+<span id="cb11-27"><a href="retrieve-satellite-data.html#cb11-27" tabindex="-1"></a><span class="co">#                                          path_peak[file, 2],&quot;_&quot;,y,&quot;_GCVI.tif&quot;),</span></span>
+<span id="cb11-28"><a href="retrieve-satellite-data.html#cb11-28" tabindex="-1"></a><span class="co">#                             scale = 10)</span></span>
+<span id="cb11-29"><a href="retrieve-satellite-data.html#cb11-29" tabindex="-1"></a><span class="co">#   }</span></span>
+<span id="cb11-30"><a href="retrieve-satellite-data.html#cb11-30" tabindex="-1"></a><span class="co">#   }</span></span></code></pre></div>
+</div>
+<div id="reference" class="section level2 hasAnchor" number="2.5">
+<h2><span class="header-section-number">2.5</span> Reference<a href="retrieve-satellite-data.html#reference" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Arno Z, Erickson J (2022). tidyrgee: ‘tidyverse’ Methods for ’Earth Engine’.
+R package version 0.1.0, <a href="https://CRAN.R-project.org/package=tidyrgee" class="uri">https://CRAN.R-project.org/package=tidyrgee</a>.</p></li>
+<li><p>Aybar C (2024). rgee: R Bindings for Calling the ‘Earth Engine’ API.
+<a href="https://github.com/r-spatial/rgee/" class="uri">https://github.com/r-spatial/rgee/</a>, <a href="https://r-spatial.github.io/rgee/" class="uri">https://r-spatial.github.io/rgee/</a>, <a href="https://github.com/google/earthengine-api/" class="uri">https://github.com/google/earthengine-api/</a>.</p></li>
+<li><p>Bivand R, Pebesma E, Gomez-Rubio V (2013). Applied spatial data analysis with R, Second edition. Springer, NY. <a href="https://asdar-book.org/" class="uri">https://asdar-book.org/</a>.</p></li>
+<li><p>Hijmans R (2023). raster: Geographic Data Analysis and Modeling. R package
+version 3.6-26, <a href="https://CRAN.R-project.org/package=raster" class="uri">https://CRAN.R-project.org/package=raster</a>.</p></li>
+<li><p>Pebesma E (2018). “Simple Features for R: Standardized Support for Spatial Vector Data.” The R Journal, 10(1), 439–446. <a href="doi:10.32614/RJ-2018-009" class="uri">doi:10.32614/RJ-2018-009</a>, <a href="https://doi.org/10.32614/RJ-2018-009" class="uri">https://doi.org/10.32614/RJ-2018-009</a>.</p></li>
+<li><p>Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). “Welcome to the tidyverse.” Journal of Open Source Software, 4(43), 1686. <a href="doi:10.21105/joss.01686" class="uri">doi:10.21105/joss.01686</a>.</p></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="clean-yield-monitor-data-merge-with-satellite-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/1_Sentinel_data.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

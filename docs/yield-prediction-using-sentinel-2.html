@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>3 Yield prediction using sentinel-2 | Spatio-temporal yield variation to precipitation within a field</title>
+  <meta name="description" content="3 Yield prediction using sentinel-2 | Spatio-temporal yield variation to precipitation within a field" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="3 Yield prediction using sentinel-2 | Spatio-temporal yield variation to precipitation within a field" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="3 Yield prediction using sentinel-2 | Spatio-temporal yield variation to precipitation within a field" />
+  
+  
+  
+
+<meta name="author" content="Emmanuela van Versendaal" />
+
+
+<meta name="date" content="2024-08-06" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="data-collection-wrangling-exploration.html"/>
+<link rel="next" href="spatio-temporal-variation-models.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="custom.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<Spatio-temporal Yield variation within field>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html"><i class="fa fa-check"></i><b>2</b> Data collection, wrangling &amp; exploration</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#retrieve-satellite-data"><i class="fa fa-check"></i><b>2.1</b> Retrieve satellite data</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#import-libraries"><i class="fa fa-check"></i><b>2.1.1</b> Import libraries</a></li>
+<li class="chapter" data-level="2.1.2" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#field-identification"><i class="fa fa-check"></i><b>2.1.2</b> Field identification</a></li>
+<li class="chapter" data-level="2.1.3" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#gcvi-peak-detection"><i class="fa fa-check"></i><b>2.1.3</b> GCVI Peak detection</a></li>
+<li class="chapter" data-level="2.1.4" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#gcvi-at-pixel-level-within-field"><i class="fa fa-check"></i><b>2.1.4</b> GCVI at pixel level within field</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#clean-yield-monitor-data"><i class="fa fa-check"></i><b>2.2</b> Clean yield monitor data</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#import-libraries-1"><i class="fa fa-check"></i><b>2.2.1</b> Import libraries</a></li>
+<li class="chapter" data-level="2.2.2" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#field-identification-1"><i class="fa fa-check"></i><b>2.2.2</b> Field identification</a></li>
+<li class="chapter" data-level="2.2.3" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#cleaning-process"><i class="fa fa-check"></i><b>2.2.3</b> Cleaning process</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#merge-ym-data-gcvi-data"><i class="fa fa-check"></i><b>2.3</b> Merge YM data &amp; GCVI data</a></li>
+<li class="chapter" data-level="2.4" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#cp-period"><i class="fa fa-check"></i><b>2.4</b> CP period</a></li>
+<li class="chapter" data-level="2.5" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#data-exploration"><i class="fa fa-check"></i><b>2.5</b> Data exploration</a></li>
+<li class="chapter" data-level="2.6" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#split-field-in-training-testing"><i class="fa fa-check"></i><b>2.6</b> Split field in training-testing</a></li>
+<li class="chapter" data-level="2.7" data-path="data-collection-wrangling-exploration.html"><a href="data-collection-wrangling-exploration.html#reference"><i class="fa fa-check"></i><b>2.7</b> Reference</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="yield-prediction-using-sentinel-2.html"><a href="yield-prediction-using-sentinel-2.html"><i class="fa fa-check"></i><b>3</b> Yield prediction using sentinel-2</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="yield-prediction-using-sentinel-2.html"><a href="yield-prediction-using-sentinel-2.html#import-libraries-2"><i class="fa fa-check"></i><b>3.1</b> Import libraries</a></li>
+<li class="chapter" data-level="3.2" data-path="yield-prediction-using-sentinel-2.html"><a href="yield-prediction-using-sentinel-2.html#model"><i class="fa fa-check"></i><b>3.2</b> Model</a></li>
+<li class="chapter" data-level="3.3" data-path="yield-prediction-using-sentinel-2.html"><a href="yield-prediction-using-sentinel-2.html#predict"><i class="fa fa-check"></i><b>3.3</b> Predict</a></li>
+<li class="chapter" data-level="3.4" data-path="yield-prediction-using-sentinel-2.html"><a href="yield-prediction-using-sentinel-2.html#model-evaluation"><i class="fa fa-check"></i><b>3.4</b> Model evaluation</a></li>
+<li class="chapter" data-level="3.5" data-path="yield-prediction-using-sentinel-2.html"><a href="yield-prediction-using-sentinel-2.html#save-prediction"><i class="fa fa-check"></i><b>3.5</b> Save prediction</a></li>
+<li class="chapter" data-level="3.6" data-path="yield-prediction-using-sentinel-2.html"><a href="yield-prediction-using-sentinel-2.html#reference-1"><i class="fa fa-check"></i><b>3.6</b> Reference</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html"><i class="fa fa-check"></i><b>4</b> Spatio-temporal variation models</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#import-libraries-3"><i class="fa fa-check"></i><b>4.1</b> Import Libraries</a></li>
+<li class="chapter" data-level="4.2" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#upload-data"><i class="fa fa-check"></i><b>4.2</b> Upload data</a></li>
+<li class="chapter" data-level="4.3" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#gams"><i class="fa fa-check"></i><b>4.3</b> GAMs</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#run-models"><i class="fa fa-check"></i><b>4.3.1</b> Run models</a></li>
+<li class="chapter" data-level="4.3.2" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#obtain-predictions"><i class="fa fa-check"></i><b>4.3.2</b> Obtain predictions</a></li>
+<li class="chapter" data-level="4.3.3" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#model-evaluation-1"><i class="fa fa-check"></i><b>4.3.3</b> Model evaluation</a></li>
+<li class="chapter" data-level="4.3.4" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#spatially-varying-parameters"><i class="fa fa-check"></i><b>4.3.4</b> Spatially Varying Parameters</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#cart"><i class="fa fa-check"></i><b>4.4</b> CART</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#run-cart"><i class="fa fa-check"></i><b>4.4.1</b> Run CART</a></li>
+<li class="chapter" data-level="4.4.2" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#obtain-figures"><i class="fa fa-check"></i><b>4.4.2</b> Obtain Figures</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="spatio-temporal-variation-models.html"><a href="spatio-temporal-variation-models.html#reference-2"><i class="fa fa-check"></i><b>4.5</b> Reference</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Spatio-temporal yield variation to precipitation within a field</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="yield-prediction-using-sentinel-2" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">3</span> Yield prediction using sentinel-2<a href="yield-prediction-using-sentinel-2.html#yield-prediction-using-sentinel-2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>To upscale the assessment of spatio-temporal yield variation in relation to precipitation within a field, it is important to identify these patterns without relying solely on yield monitor data. This is crucial because not all farmers have access to many years of yield monitor data, yet this information is invaluable for optimizing field management.</p>
+<div id="import-libraries-2" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Import libraries<a href="yield-prediction-using-sentinel-2.html#import-libraries-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="yield-prediction-using-sentinel-2.html#cb39-1" tabindex="-1"></a><span class="co"># Packages to be used</span></span>
+<span id="cb39-2"><a href="yield-prediction-using-sentinel-2.html#cb39-2" tabindex="-1"></a>library_names <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sp&quot;</span>, <span class="co"># (Bivand et al., 2012)</span></span>
+<span id="cb39-3"><a href="yield-prediction-using-sentinel-2.html#cb39-3" tabindex="-1"></a>                   <span class="st">&quot;sf&quot;</span>, <span class="co"># (Pebesma, 2018)</span></span>
+<span id="cb39-4"><a href="yield-prediction-using-sentinel-2.html#cb39-4" tabindex="-1"></a>                   <span class="st">&quot;randomForest&quot;</span>, <span class="co">#(Liaw and Wiener, 2002)</span></span>
+<span id="cb39-5"><a href="yield-prediction-using-sentinel-2.html#cb39-5" tabindex="-1"></a>                   <span class="st">&quot;rsample&quot;</span>, <span class="co"># Select pixel randomly</span></span>
+<span id="cb39-6"><a href="yield-prediction-using-sentinel-2.html#cb39-6" tabindex="-1"></a>                   <span class="st">&quot;tidyverse&quot;</span>) <span class="co"># (Wickham et al., 2019)</span></span>
+<span id="cb39-7"><a href="yield-prediction-using-sentinel-2.html#cb39-7" tabindex="-1"></a><span class="co"># Iterate over each library name</span></span>
+<span id="cb39-8"><a href="yield-prediction-using-sentinel-2.html#cb39-8" tabindex="-1"></a><span class="cf">for</span> (lib_name <span class="cf">in</span> library_names) {</span>
+<span id="cb39-9"><a href="yield-prediction-using-sentinel-2.html#cb39-9" tabindex="-1"></a>  <span class="co"># Check if the library is already installed</span></span>
+<span id="cb39-10"><a href="yield-prediction-using-sentinel-2.html#cb39-10" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(lib_name, <span class="at">character.only =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb39-11"><a href="yield-prediction-using-sentinel-2.html#cb39-11" tabindex="-1"></a>    <span class="co"># If the library is not installed, install it</span></span>
+<span id="cb39-12"><a href="yield-prediction-using-sentinel-2.html#cb39-12" tabindex="-1"></a>    <span class="fu">install.packages</span>(lib_name, <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb39-13"><a href="yield-prediction-using-sentinel-2.html#cb39-13" tabindex="-1"></a>    <span class="co"># Load the library</span></span>
+<span id="cb39-14"><a href="yield-prediction-using-sentinel-2.html#cb39-14" tabindex="-1"></a>    <span class="fu">library</span>(lib_name, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb39-15"><a href="yield-prediction-using-sentinel-2.html#cb39-15" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb39-16"><a href="yield-prediction-using-sentinel-2.html#cb39-16" tabindex="-1"></a>    <span class="co"># If the library is already installed, load it</span></span>
+<span id="cb39-17"><a href="yield-prediction-using-sentinel-2.html#cb39-17" tabindex="-1"></a>    <span class="fu">library</span>(lib_name, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb39-18"><a href="yield-prediction-using-sentinel-2.html#cb39-18" tabindex="-1"></a>  }</span>
+<span id="cb39-19"><a href="yield-prediction-using-sentinel-2.html#cb39-19" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="model" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Model<a href="yield-prediction-using-sentinel-2.html#model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A random forest model was used to predict yield monitor data using the training dataset. The model incorporates the Green Chlorophyll Vegetation Index (GCVI) at three key time points: the peak GCVI value, 30 days before the peak, and 30 days after the peak. The GCVI data were sourced from Sentinel-2, providing a pixel resolution of 10 m x 10 m within the field.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="yield-prediction-using-sentinel-2.html#cb40-1" tabindex="-1"></a>m_rf <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(Yield <span class="sc">~</span> P_3_GCV <span class="sc">+</span> Peak_GCVI <span class="sc">+</span> P_30_GC, <span class="at">data =</span> train_sample)</span>
+<span id="cb40-2"><a href="yield-prediction-using-sentinel-2.html#cb40-2" tabindex="-1"></a><span class="co">#plot(m_rf)</span></span>
+<span id="cb40-3"><a href="yield-prediction-using-sentinel-2.html#cb40-3" tabindex="-1"></a><span class="co">#varImpPlot(m_rf)</span></span>
+<span id="cb40-4"><a href="yield-prediction-using-sentinel-2.html#cb40-4" tabindex="-1"></a><span class="co">#summary(m_rf)</span></span>
+<span id="cb40-5"><a href="yield-prediction-using-sentinel-2.html#cb40-5" tabindex="-1"></a>m_rf</span></code></pre></div>
+<pre><code>## 
+## Call:
+##  randomForest(formula = Yield ~ P_3_GCV + Peak_GCVI + P_30_GC,      data = train_sample) 
+##                Type of random forest: regression
+##                      Number of trees: 500
+## No. of variables tried at each split: 1
+## 
+##           Mean of squared residuals: 931793.9
+##                     % Var explained: 94.3</code></pre>
+</div>
+<div id="predict" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Predict<a href="yield-prediction-using-sentinel-2.html#predict" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The testing data were used to generate model predictions and evaluate its performance. The testing dataset includes four fields: one field with four years of maize yield monitor data, and three others with one year of yield data each. These fields were separated from the training dataset. Most of the other fields in the training dataset are related geographically, as they are located on the same farm (e.g., fields in Kansas). In contrast, the testing fields are located in different regions than those used in the training dataset.</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="yield-prediction-using-sentinel-2.html#cb42-1" tabindex="-1"></a>rf_pred <span class="ot">&lt;-</span> test_df <span class="sc">%&gt;%</span></span>
+<span id="cb42-2"><a href="yield-prediction-using-sentinel-2.html#cb42-2" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb42-3"><a href="yield-prediction-using-sentinel-2.html#cb42-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> Year) <span class="sc">%&gt;%</span></span>
+<span id="cb42-4"><a href="yield-prediction-using-sentinel-2.html#cb42-4" tabindex="-1"></a>  <span class="fu">group_by</span>(ID, year, Farm) <span class="sc">%&gt;%</span></span>
+<span id="cb42-5"><a href="yield-prediction-using-sentinel-2.html#cb42-5" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb42-6"><a href="yield-prediction-using-sentinel-2.html#cb42-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">RF =</span> data <span class="sc">%&gt;%</span> <span class="fu">map</span>(.,<span class="sc">~</span><span class="fu">as.data.frame</span>(.) <span class="sc">%&gt;%</span></span>
+<span id="cb42-7"><a href="yield-prediction-using-sentinel-2.html#cb42-7" tabindex="-1"></a>                             <span class="fu">mutate</span>(<span class="at">RF =</span> <span class="fu">predict</span>(m_rf, .)) <span class="sc">%&gt;%</span></span>
+<span id="cb42-8"><a href="yield-prediction-using-sentinel-2.html#cb42-8" tabindex="-1"></a>                             dplyr<span class="sc">::</span><span class="fu">select</span>(RF)))</span></code></pre></div>
+</div>
+<div id="model-evaluation" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Model evaluation<a href="yield-prediction-using-sentinel-2.html#model-evaluation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>Obtain metrics</strong></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="yield-prediction-using-sentinel-2.html#cb43-1" tabindex="-1"></a>labs <span class="ot">&lt;-</span> rf_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb43-2"><a href="yield-prediction-using-sentinel-2.html#cb43-2" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="fu">c</span>(RF,data )) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-3"><a href="yield-prediction-using-sentinel-2.html#cb43-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Yield, RF) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-4"><a href="yield-prediction-using-sentinel-2.html#cb43-4" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(RF,<span class="at">names_to =</span> <span class="st">&quot;Model&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Pred&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-5"><a href="yield-prediction-using-sentinel-2.html#cb43-5" tabindex="-1"></a>  <span class="fu">drop_na</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb43-6"><a href="yield-prediction-using-sentinel-2.html#cb43-6" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Model) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-7"><a href="yield-prediction-using-sentinel-2.html#cb43-7" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">RRMSE =</span> <span class="fu">round</span>(metrica<span class="sc">::</span><span class="fu">RRMSE</span>(<span class="at">obs =</span> Yield, <span class="at">pred =</span>Pred)[[<span class="dv">1</span>]]<span class="sc">*</span><span class="dv">100</span>,<span class="dv">0</span>),</span>
+<span id="cb43-8"><a href="yield-prediction-using-sentinel-2.html#cb43-8" tabindex="-1"></a>            <span class="at">PLP =</span> <span class="fu">round</span>(metrica<span class="sc">::</span><span class="fu">PLP</span>(<span class="at">obs =</span> Yield, <span class="at">pred =</span>Pred)[[<span class="dv">1</span>]],<span class="dv">0</span>),</span>
+<span id="cb43-9"><a href="yield-prediction-using-sentinel-2.html#cb43-9" tabindex="-1"></a>            <span class="at">PLA =</span> <span class="fu">round</span>(metrica<span class="sc">::</span><span class="fu">PLA</span>(<span class="at">obs =</span> Yield, <span class="at">pred =</span>Pred)[[<span class="dv">1</span>]],<span class="dv">0</span>),</span>
+<span id="cb43-10"><a href="yield-prediction-using-sentinel-2.html#cb43-10" tabindex="-1"></a>            <span class="at">MAE =</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(Yield <span class="sc">-</span> Pred)),<span class="dv">0</span>) ) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-11"><a href="yield-prediction-using-sentinel-2.html#cb43-11" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>Model, <span class="at">names_to =</span> <span class="st">&quot;Metric&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Val&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb43-12"><a href="yield-prediction-using-sentinel-2.html#cb43-12" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Label =</span> <span class="fu">paste</span>(Metric, <span class="st">&quot;=&quot;</span>, Val))</span></code></pre></div>
+<pre><code>## Adding missing grouping variables: `ID`,
+## `year`, `Farm`</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="yield-prediction-using-sentinel-2.html#cb45-1" tabindex="-1"></a><span class="co"># Prepare label positions</span></span>
+<span id="cb45-2"><a href="yield-prediction-using-sentinel-2.html#cb45-2" tabindex="-1"></a>num_metrics <span class="ot">&lt;-</span> <span class="fu">n_distinct</span>(labs<span class="sc">$</span>Metric)</span>
+<span id="cb45-3"><a href="yield-prediction-using-sentinel-2.html#cb45-3" tabindex="-1"></a>y_positions <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">20000</span>, <span class="at">by =</span> <span class="sc">-</span><span class="dv">1000</span>, <span class="at">length.out =</span> num_metrics)</span>
+<span id="cb45-4"><a href="yield-prediction-using-sentinel-2.html#cb45-4" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="yield-prediction-using-sentinel-2.html#cb45-5" tabindex="-1"></a>labs <span class="ot">&lt;-</span> labs <span class="sc">%&gt;%</span></span>
+<span id="cb45-6"><a href="yield-prediction-using-sentinel-2.html#cb45-6" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">y_position =</span> <span class="fu">seq</span>(<span class="dv">20000</span>, <span class="at">by =</span> <span class="sc">-</span><span class="dv">1000</span>, <span class="at">length.out =</span> num_metrics))</span></code></pre></div>
+<p><strong>Plot Observed vs predicted</strong></p>
+<p>Plot the observed yield monitor data against the predicted yield data to evaluate the model’s performance. Additionally, create maps for each year using both predicted and observed data to assess whether the model accurately captures the spatial distribution within the field.</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="yield-prediction-using-sentinel-2.html#cb46-1" tabindex="-1"></a>Obs_pred_YP <span class="ot">&lt;-</span> test_df <span class="sc">%&gt;%</span> </span>
+<span id="cb46-2"><a href="yield-prediction-using-sentinel-2.html#cb46-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Farm,Crop, Year, ID, X,Y, Yield, Peak_GCVI) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-3"><a href="yield-prediction-using-sentinel-2.html#cb46-3" tabindex="-1"></a>  <span class="fu">left_join</span>(rf_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb46-4"><a href="yield-prediction-using-sentinel-2.html#cb46-4" tabindex="-1"></a>              <span class="fu">unnest</span>(<span class="fu">c</span>(data,RF)) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-5"><a href="yield-prediction-using-sentinel-2.html#cb46-5" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(RF, Year), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;ID&quot;</span>, <span class="st">&quot;Year&quot;</span>, <span class="st">&quot;Farm&quot;</span>) ) <span class="sc">%&gt;%</span> </span>
+<span id="cb46-6"><a href="yield-prediction-using-sentinel-2.html#cb46-6" tabindex="-1"></a>  <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb46-7"><a href="yield-prediction-using-sentinel-2.html#cb46-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> RF, <span class="at">y =</span> Yield, <span class="at">fill =</span> Farm), </span>
+<span id="cb46-8"><a href="yield-prediction-using-sentinel-2.html#cb46-8" tabindex="-1"></a>             <span class="at">shape =</span> <span class="dv">21</span>, <span class="at">alpha =</span>.<span class="dv">5</span>, <span class="at">size =</span> <span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb46-9"><a href="yield-prediction-using-sentinel-2.html#cb46-9" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">slope =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb46-10"><a href="yield-prediction-using-sentinel-2.html#cb46-10" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20000</span>, <span class="dv">5000</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20000</span>))<span class="sc">+</span></span>
+<span id="cb46-11"><a href="yield-prediction-using-sentinel-2.html#cb46-11" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">20000</span>, <span class="dv">5000</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">20000</span>))<span class="sc">+</span></span>
+<span id="cb46-12"><a href="yield-prediction-using-sentinel-2.html#cb46-12" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data =</span>labs, </span>
+<span id="cb46-13"><a href="yield-prediction-using-sentinel-2.html#cb46-13" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> y_position, <span class="at">label =</span> Label), <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">size =</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb46-14"><a href="yield-prediction-using-sentinel-2.html#cb46-14" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="fu">expression</span>(Observed<span class="sc">~</span>yield<span class="sc">~</span>(kg<span class="sc">~</span>ha<span class="sc">^-</span><span class="dv">1</span>)),</span>
+<span id="cb46-15"><a href="yield-prediction-using-sentinel-2.html#cb46-15" tabindex="-1"></a>       <span class="at">x =</span> <span class="fu">expression</span>(Predicted<span class="sc">~</span>yield<span class="sc">~</span>(kg<span class="sc">~</span>ha<span class="sc">^-</span><span class="dv">1</span>)))<span class="sc">+</span></span>
+<span id="cb46-16"><a href="yield-prediction-using-sentinel-2.html#cb46-16" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;#415a77&quot;</span>, <span class="st">&quot;#52796f&quot;</span>,<span class="st">&quot;#936639&quot;</span>,<span class="st">&quot;#adb5bd&quot;</span>),</span>
+<span id="cb46-17"><a href="yield-prediction-using-sentinel-2.html#cb46-17" tabindex="-1"></a>                    <span class="at">aesthetics =</span> <span class="st">&quot;fill&quot;</span>)<span class="sc">+</span></span>
+<span id="cb46-18"><a href="yield-prediction-using-sentinel-2.html#cb46-18" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb46-19"><a href="yield-prediction-using-sentinel-2.html#cb46-19" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>,<span class="at">family =</span> <span class="st">&quot;sans&quot;</span>),</span>
+<span id="cb46-20"><a href="yield-prediction-using-sentinel-2.html#cb46-20" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb46-21"><a href="yield-prediction-using-sentinel-2.html#cb46-21" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;#eeeeee&quot;</span>),</span>
+<span id="cb46-22"><a href="yield-prediction-using-sentinel-2.html#cb46-22" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">&quot;#f8f9fa&quot;</span>),</span>
+<span id="cb46-23"><a href="yield-prediction-using-sentinel-2.html#cb46-23" tabindex="-1"></a>        <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb46-24"><a href="yield-prediction-using-sentinel-2.html#cb46-24" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb46-25"><a href="yield-prediction-using-sentinel-2.html#cb46-25" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb46-26"><a href="yield-prediction-using-sentinel-2.html#cb46-26" tabindex="-1"></a>        <span class="at">axis.ticks.length=</span><span class="fu">unit</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="st">&quot;cm&quot;</span>))</span>
+<span id="cb46-27"><a href="yield-prediction-using-sentinel-2.html#cb46-27" tabindex="-1"></a>Obs_pred_YP</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-35-1.png" width="528" /></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="yield-prediction-using-sentinel-2.html#cb47-1" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;3_Output/4_Yield_pred/Obs_pred_YP.png&quot;</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">width =</span> <span class="fl">5.5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="yield-prediction-using-sentinel-2.html#cb48-1" tabindex="-1"></a>yearYields <span class="ot">&lt;-</span> test_df <span class="sc">%&gt;%</span> </span>
+<span id="cb48-2"><a href="yield-prediction-using-sentinel-2.html#cb48-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Farm,Crop, Year, ID, X,Y, Yield, Peak_GCVI) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-3"><a href="yield-prediction-using-sentinel-2.html#cb48-3" tabindex="-1"></a>  <span class="fu">left_join</span>(rf_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb48-4"><a href="yield-prediction-using-sentinel-2.html#cb48-4" tabindex="-1"></a>              <span class="fu">unnest</span>(<span class="fu">c</span>(data,RF)) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-5"><a href="yield-prediction-using-sentinel-2.html#cb48-5" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(RF, Year), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;ID&quot;</span>, <span class="st">&quot;Year&quot;</span>, <span class="st">&quot;Farm&quot;</span>) ) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-6"><a href="yield-prediction-using-sentinel-2.html#cb48-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Farm <span class="sc">==</span> <span class="st">&quot;IL5&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb48-7"><a href="yield-prediction-using-sentinel-2.html#cb48-7" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(Yield, RF), <span class="at">names_to =</span> <span class="st">&quot;var&quot;</span>,<span class="at">values_to =</span> <span class="st">&quot;val&quot;</span> ) <span class="sc">%&gt;%</span> </span>
+<span id="cb48-8"><a href="yield-prediction-using-sentinel-2.html#cb48-8" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb48-9"><a href="yield-prediction-using-sentinel-2.html#cb48-9" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">color =</span> val), <span class="at">size =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb48-10"><a href="yield-prediction-using-sentinel-2.html#cb48-10" tabindex="-1"></a>  <span class="fu">scale_color_gradientn</span>(<span class="at">colors =</span> <span class="fu">c</span>(<span class="st">&quot;#3b0001&quot;</span>,<span class="st">&quot;#be0003&quot;</span>,<span class="st">&quot;#ff4903&quot;</span>,<span class="st">&quot;#ffdc00&quot;</span>,</span>
+<span id="cb48-11"><a href="yield-prediction-using-sentinel-2.html#cb48-11" tabindex="-1"></a>                                   <span class="st">&quot;#559d03&quot;</span>,<span class="st">&quot;#075e07&quot;</span>,<span class="st">&#39;#161f0c&#39;</span>)) <span class="sc">+</span></span>
+<span id="cb48-12"><a href="yield-prediction-using-sentinel-2.html#cb48-12" tabindex="-1"></a>  <span class="fu">facet_grid</span>(Year<span class="sc">~</span>var)<span class="sc">+</span></span>
+<span id="cb48-13"><a href="yield-prediction-using-sentinel-2.html#cb48-13" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(.<span class="dv">15</span>,.<span class="dv">15</span>))<span class="sc">+</span></span>
+<span id="cb48-14"><a href="yield-prediction-using-sentinel-2.html#cb48-14" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(.<span class="dv">15</span>,.<span class="dv">15</span>))<span class="sc">+</span></span>
+<span id="cb48-15"><a href="yield-prediction-using-sentinel-2.html#cb48-15" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb48-16"><a href="yield-prediction-using-sentinel-2.html#cb48-16" tabindex="-1"></a>        <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb48-17"><a href="yield-prediction-using-sentinel-2.html#cb48-17" tabindex="-1"></a>        <span class="at">strip.background =</span> <span class="fu">element_blank</span>(),<span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb48-18"><a href="yield-prediction-using-sentinel-2.html#cb48-18" tabindex="-1"></a>        <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">&quot;#7f7f7f&quot;</span>, <span class="at">color =</span> <span class="st">&quot;#949494&quot;</span>),</span>
+<span id="cb48-19"><a href="yield-prediction-using-sentinel-2.html#cb48-19" tabindex="-1"></a>        <span class="at">panel.grid =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">&quot;#949494&quot;</span>),</span>
+<span id="cb48-20"><a href="yield-prediction-using-sentinel-2.html#cb48-20" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb48-21"><a href="yield-prediction-using-sentinel-2.html#cb48-21" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb48-22"><a href="yield-prediction-using-sentinel-2.html#cb48-22" tabindex="-1"></a>        <span class="at">legend.key.height=</span> <span class="fu">unit</span>(.<span class="dv">2</span>, <span class="st">&#39;cm&#39;</span>),</span>
+<span id="cb48-23"><a href="yield-prediction-using-sentinel-2.html#cb48-23" tabindex="-1"></a>        <span class="at">legend.key.width=</span> <span class="fu">unit</span>(.<span class="dv">9</span>, <span class="st">&#39;cm&#39;</span>))</span>
+<span id="cb48-24"><a href="yield-prediction-using-sentinel-2.html#cb48-24" tabindex="-1"></a>yearYields</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="yield-prediction-using-sentinel-2.html#cb49-1" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">&quot;3_Output/4_Yield_pred/yearYields.png&quot;</span>, <span class="at">height =</span> <span class="dv">6</span>, <span class="at">width =</span> <span class="fl">4.5</span>)</span></code></pre></div>
+</div>
+<div id="save-prediction" class="section level2 hasAnchor" number="3.5">
+<h2><span class="header-section-number">3.5</span> Save prediction<a href="yield-prediction-using-sentinel-2.html#save-prediction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="yield-prediction-using-sentinel-2.html#cb50-1" tabindex="-1"></a>YM_df <span class="ot">&lt;-</span> test_df <span class="sc">%&gt;%</span> </span>
+<span id="cb50-2"><a href="yield-prediction-using-sentinel-2.html#cb50-2" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(Farm,Crop, Year, ID, X,Y, Yield, Peak_GCVI) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-3"><a href="yield-prediction-using-sentinel-2.html#cb50-3" tabindex="-1"></a>  <span class="fu">left_join</span>(rf_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb50-4"><a href="yield-prediction-using-sentinel-2.html#cb50-4" tabindex="-1"></a>              <span class="fu">unnest</span>(<span class="fu">c</span>(data,RF)) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-5"><a href="yield-prediction-using-sentinel-2.html#cb50-5" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(RF, Year), <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;ID&quot;</span>, <span class="st">&quot;Year&quot;</span>, <span class="st">&quot;Farm&quot;</span>) ) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-6"><a href="yield-prediction-using-sentinel-2.html#cb50-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(Farm <span class="sc">==</span> <span class="st">&quot;IL5&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-7"><a href="yield-prediction-using-sentinel-2.html#cb50-7" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Ypred =</span> RF,</span>
+<span id="cb50-8"><a href="yield-prediction-using-sentinel-2.html#cb50-8" tabindex="-1"></a>         <span class="at">Yobs =</span> Yield,</span>
+<span id="cb50-9"><a href="yield-prediction-using-sentinel-2.html#cb50-9" tabindex="-1"></a>         <span class="at">crp =</span> Crop) <span class="sc">%&gt;%</span> </span>
+<span id="cb50-10"><a href="yield-prediction-using-sentinel-2.html#cb50-10" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(year,Farm))</span>
+<span id="cb50-11"><a href="yield-prediction-using-sentinel-2.html#cb50-11" tabindex="-1"></a></span>
+<span id="cb50-12"><a href="yield-prediction-using-sentinel-2.html#cb50-12" tabindex="-1"></a>sf<span class="sc">::</span><span class="fu">write_sf</span>(YM_df, <span class="fu">paste0</span>(<span class="st">&quot;1_Data/5_YieldPred/YM_df&quot;</span>, FIELD_NAME, <span class="st">&quot;_Ypred.shp&quot;</span>),<span class="at">append =</span> F)</span></code></pre></div>
+</div>
+<div id="reference-1" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Reference<a href="yield-prediction-using-sentinel-2.html#reference-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ol style="list-style-type: decimal">
+<li><p>Bivand R, Pebesma E, Gomez-Rubio V (2013). Applied spatial data analysis with R, Second edition. Springer, NY. <a href="https://asdar-book.org/" class="uri">https://asdar-book.org/</a>.</p></li>
+<li><p>Liaw, A., Wiener, M. (2002). Classification and Regression by randomForest. R News 2(3), 18–22.</p></li>
+<li><p>Pebesma E (2018). “Simple Features for R: Standardized Support for Spatial Vector Data.” The R Journal, 10(1), 439–446. <a href="doi:10.32614/RJ-2018-009" class="uri">doi:10.32614/RJ-2018-009</a>, <a href="https://doi.org/10.32614/RJ-2018-009" class="uri">https://doi.org/10.32614/RJ-2018-009</a>.</p></li>
+<li><p>Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). “Welcome to the tidyverse.” Journal of Open Source Software, 4(43), 1686. <a href="doi:10.21105/joss.01686" class="uri">doi:10.21105/joss.01686</a>.</p></li>
+</ol>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-collection-wrangling-exploration.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="spatio-temporal-variation-models.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/USERNAME/REPO/edit/BRANCH/3_Yield_prediction.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub", "_main.figures"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
