@@ -23,7 +23,7 @@
 <meta name="author" content="Emmanuela van Versendaal" />
 
 
-<meta name="date" content="2024-08-07" />
+<meta name="date" content="2024-08-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -295,8 +295,8 @@ MAE = \frac{1}{n}\sum|Obs_i - Pred_i|
 <span id="cb46-10"><a href="yield-prediction-using-sentinel-2.html#cb46-10" tabindex="-1"></a>            <span class="at">MAE =</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(Yield <span class="sc">-</span> Pred)),<span class="dv">0</span>) ) <span class="sc">%&gt;%</span> </span>
 <span id="cb46-11"><a href="yield-prediction-using-sentinel-2.html#cb46-11" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>Model, <span class="at">names_to =</span> <span class="st">&quot;Metric&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;Val&quot;</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb46-12"><a href="yield-prediction-using-sentinel-2.html#cb46-12" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Label =</span> <span class="fu">paste</span>(Metric, <span class="st">&quot;=&quot;</span>, Val))</span></code></pre></div>
-<pre><code>## Adding missing grouping variables: `ID`,
-## `year`, `Farm`</code></pre>
+<pre><code>## Adding missing grouping variables:
+## `ID`, `year`, `Farm`</code></pre>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="yield-prediction-using-sentinel-2.html#cb48-1" tabindex="-1"></a><span class="co"># Prepare label positions</span></span>
 <span id="cb48-2"><a href="yield-prediction-using-sentinel-2.html#cb48-2" tabindex="-1"></a>num_metrics <span class="ot">&lt;-</span> <span class="fu">n_distinct</span>(labs<span class="sc">$</span>Metric)</span>
 <span id="cb48-3"><a href="yield-prediction-using-sentinel-2.html#cb48-3" tabindex="-1"></a>y_positions <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">20000</span>, <span class="at">by =</span> <span class="sc">-</span><span class="dv">1000</span>, <span class="at">length.out =</span> num_metrics)</span>
